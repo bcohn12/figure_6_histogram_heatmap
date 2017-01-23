@@ -1,4 +1,6 @@
 source('vectormap.r')
+source('distal_progression_csv_filename_list.r')
+
 
 ## @param point_matrix a matrix where each row is a n-dimensional point sampled. columns are muscles.
 ## @return val a list of histogramdatastructures
@@ -116,9 +118,8 @@ pca_muscle_solution_space <- function(filename, folder_path){
 
 
 # main(finger_alpha_progression_filenames)
-source('distal_progression_csv_filename_list.r')
-filenames_to_visualize <- distal_progression_csv_filename_list_len_10()
-main(filenames_to_visualize, folder_path = '~/Documents/GitHub/bcohn12/space/output/n_1000_alphalen_10/')
+filenames_to_visualize <- distal_progression_csv_filename_list()
+main(filenames_to_visualize, folder_path = 'n_1000_alphalen_1000/')
 # dev.off()
 # plot.new()
 # par(mfrow=c(1,3))
