@@ -1,3 +1,15 @@
+order_filenames_by_force_number <- function(hitrun_finger_forcevector_filename_list) {
+	forces <- lapply(hitrun_finger_forcevector_filename_list, extract_force_number_from_filename_string)
+	return(reordered_filename_list)
+}
+
+extract_force_number_from_filename_string <- function(filename_string) {
+	str_sub()
+	return(extracted_number)
+}
+
+
+
 distal_progression_csv_filename_list <- function(x) {
 	return(
 		c(

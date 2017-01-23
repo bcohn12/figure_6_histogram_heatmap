@@ -68,7 +68,7 @@ main <- function(filename_list, folder_path = ""){
 		})
 	message("All point sets from CSV are in active Memory.")
 
-	list_of_histogram_sublists <- lapply(list_of_point_matrices, histogram_all_columns, binwidth=0.05)
+	list_of_histogram_sublists <- lapply(list_of_point_matrices, histogram_all_columns, binwidth=0.025)
 	
 	#split the ublists and reorder into histograms by muscle
 	# tasks_iterator = 1:length(finger_alpha_progression_filenames)
