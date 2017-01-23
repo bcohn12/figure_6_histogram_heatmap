@@ -1,3 +1,9 @@
+sorted_distal_progression_csv_filename_list <- function(){
+ unsorted_files <- distal_progression_csv_filename_list()
+ sorted_files <- order_filenames_by_force_number(unsorted_files)
+ return(sorted_files)
+}
+
 order_filenames_by_force_number <- function(hitrun_finger_forcevector_filename_list) {
 	forces <- lapply(hitrun_finger_forcevector_filename_list, extract_force_number_from_filename_string)
 	return(reordered_filename_list)
@@ -8,9 +14,7 @@ extract_force_number_from_filename_string <- function(filename_string) {
 	return(extracted_number)
 }
 
-
-
-distal_progression_csv_filename_list <- function(x) {
+distal_progression_csv_filename_list <- function() {
 	return(
 		c(
 "finger_forcevector_0.0_1484767835427.csv",
