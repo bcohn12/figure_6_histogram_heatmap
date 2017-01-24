@@ -40,7 +40,7 @@ get_matrix_of_counts <- function(list_of_histograms_for_a_given_muscle){
 library(fields)
 plot_force_progression_map <- function(histogram_progression_matrix, log_the_values=FALSE){
 	#force 0 to be pure black, and next to zero to be bright orange.
-	color_ramp <- colorRampPalette(c("#ffffff","#27499b","#2d7cb0","#45afba","#90d0b2", "#eaf2c3"))(99)
+	color_ramp <- colorRampPalette(c("#27499b","#2d7cb0","#45afba","#90d0b2", "#eaf2c3"))(99)
 	color_ramp <- c("#000000", color_ramp) #append black as 0 for contrast
 	if (log_the_values) {
 		histogram_progression_matrix <- log10(histogram_progression_matrix + 1)
