@@ -6,7 +6,6 @@ source('distal_progression_csv_filename_list.r')
 ## @return val a list of histogramdatastructures
 histogram_all_columns <- function(point_matrix, binwidth=0.02){
 	iterator <- 1:ncol(point_matrix)
-
 	lapply(
 		iterator,
 		function(i){
@@ -41,8 +40,8 @@ get_matrix_of_counts <- function(list_of_histograms_for_a_given_muscle){
 library(fields)
 plot_force_progression_map <- function(histogram_progression_matrix, log_the_values=FALSE){
 	#force 0 to be pure black, and next to zero to be bright orange.
-	color_ramp_PuOr <- colorRampPalette(c("#27499b","#2d7cb0","#45afba","#90d0b2", "#eaf2c3"))(99)
-	color_ramp <- c("#000000", color_ramp_PuOr) 
+	color_ramp <- colorRampPalette(c("#ffffff","#27499b","#2d7cb0","#45afba","#90d0b2", "#eaf2c3"))(99)
+	color_ramp <- c("#000000", color_ramp) #append black as 0 for contrast
 	if (log_the_values) {
 		histogram_progression_matrix <- log10(histogram_progression_matrix + 1)
 	}
@@ -73,9 +72,9 @@ main <- function(filename_list, folder_path = "", binwidth=0.02, log_the_values=
 
 	list_of_histogram_sublists <- lapply(list_of_point_matrices, histogram_all_columns, binwidth)
 	
-	#split the ublists and reorder into histograms by muscle
+	# split the sublists and reorder into histograms by muscle
 	# tasks_iterator = 1:length(finger_alpha_progression_filenames)
-	#get the number of muscles and construct an iterator
+	# get the number of muscles and construct an iterator
 	muscle_iterator = 1:get_length_of_sublist(list_of_point_matrices)
 	message("All samples have been broken into histogram bins")
 	list_of_histogram_progressions <- lapply(muscle_iterator, 
@@ -84,7 +83,6 @@ main <- function(filename_list, folder_path = "", binwidth=0.02, log_the_values=
 		}
 	)
 	#for each muscle, make an image
-	message("4")
 	list_of_histogram_matrices <- lapply(list_of_histogram_progressions, get_matrix_of_counts)
 	list_of_histogram_matrices_density <- lapply(list_of_histogram_matrices, density_normalization)
 	pdf(paste0("histogram_heatmap_time_", get_unix_time_string_now(), ".pdf"), height = 9, width = 8)
@@ -118,12 +116,11 @@ pca_muscle_solution_space <- function(filename, folder_path){
 	print(loadings)
 }
 
-
-
-
-# main(finger_alpha_progression_filenames)
 filenames_to_visualize <- sorted_distal_progression_csv_filename_list()
-main(filenames_to_visualize, folder_path = 'n_1000_alphalen_1000/', binwidth=0.10, log_the_values=FALSE)
+main(filenames_to_visualize, folder_path = 'n_1000_alphalen_1000/', binwidth=0.05, log_the_values=FALSE)
+
+#if you want to get a PCA variance_explained plot for a couple of the plots. Loadings will be printed to the console.
+
 # dev.off()
 # plot.new()
 # par(mfrow=c(1,3))
