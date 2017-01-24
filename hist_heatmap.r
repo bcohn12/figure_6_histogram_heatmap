@@ -122,7 +122,7 @@ pca_muscle_solution_space <- function(filename, folder_path){
 
 
 # main(finger_alpha_progression_filenames)
-filenames_to_visualize <- distal_progression_csv_filename_list()
+filenames_to_visualize <- sorted_distal_progression_csv_filename_list()
 main(filenames_to_visualize, folder_path = 'n_1000_alphalen_1000/', binwidth=0.10, log_the_values=FALSE)
 # dev.off()
 # plot.new()

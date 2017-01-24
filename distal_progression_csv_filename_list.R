@@ -7,15 +7,20 @@ sorted_distal_progression_csv_filename_list <- function(){
 
 order_filenames_by_force_number <- function(hitrun_finger_forcevector_filename_list) {
 	# forces is the list of number value.
-	forces <- lapply(hitrun_finger_forcevector_filename_list, extract_force_number_from_filename_string)
+	forces <- extract_force_values(hitrun_finger_forcevector_filename_list)
 	index_sorted <- sort(forces, index.return = TRUE)
-	reordered_filename_list <- hitrun_finger_forcevector_filename_list[index_sorted[2]]
-	capture.output(summary(mylist), file = "orderList.txt")
+	reordered_filename_list <- hitrun_finger_forcevector_filename_list[index_sorted$ix]
 	return(reordered_filename_list)
 }
 
+extract_force_values <- function(hitrun_finger_forcevector_filename_list) {
+	forces_strings <- lapply(hitrun_finger_forcevector_filename_list, extract_force_number_from_filename_string)
+	forces <- as.numeric(do.call(c,forces_strings))
+	return(forces)
+}
+
 extract_force_number_from_filename_string <- function(filename_string) {
-	first_cut <- substr(filename_string, 20)
+	first_cut <- substr(filename_string, 20, nchar(filename_string))
 	extracted_number <- sub("_.*$", "", first_cut)
 	return(extracted_number)
 }
