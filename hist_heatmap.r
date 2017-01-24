@@ -40,7 +40,7 @@ get_matrix_of_counts <- function(list_of_histograms_for_a_given_muscle){
 library(fields)
 plot_force_progression_map <- function(histogram_progression_matrix, log_the_values=FALSE){
 	#force 0 to be pure black, and next to zero to be bright orange.
-	color_ramp <- colorRampPalette(c("#27499b","#2d7cb0","#45afba","#90d0b2", "#eaf2c3"))(99)
+	color_ramp <- colorRampPalette(c("#27499b","#2d7cb0","#45afba","#90d0b2", "#eaf2c3", "#ffffff"))(99)
 	color_ramp <- c("#000000", color_ramp) #append black as 0 for contrast
 	if (log_the_values) {
 		histogram_progression_matrix <- log10(histogram_progression_matrix + 1)
@@ -87,7 +87,7 @@ main <- function(filename_list, folder_path = "", binwidth=0.02, log_the_values=
 	list_of_histogram_matrices_density <- lapply(list_of_histogram_matrices, density_normalization)
 	pdf(paste0("histogram_heatmap_time_", get_unix_time_string_now(), ".pdf"), height = 9, width = 8)
 	par(mfrow=c(7,1))
-	par(mar=c(1,1,1,1))
+	par(mar=c(0.2,0.2,0.2,0.2))
 	lapply(list_of_histogram_matrices_density, plot_force_progression_map, log_the_values)
 	dev.off()
 	message('plotting over')
