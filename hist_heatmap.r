@@ -41,7 +41,7 @@ get_matrix_of_counts <- function(list_of_histograms_for_a_given_muscle){
 library(fields)
 plot_force_progression_map <- function(histogram_progression_matrix){
 	#force 0 to be pure black, and next to zero to be bright orange.
-	color_ramp_PuOr <- colorRampPalette(c("#f1a340","#ffffff","#998ec3"))(99)
+	color_ramp_PuOr <- colorRampPalette(c("#fc8d59", "#ffffbf","#99d594"))(99)
 	color_ramp <- c("#000000", color_ramp_PuOr) 
 	fields::image.plot(histogram_progression_matrix, col= color_ramp, axes=FALSE,xlab="",ylab="", horizontal=TRUE )
 	axes(histogram_progression_matrix,0,1)
