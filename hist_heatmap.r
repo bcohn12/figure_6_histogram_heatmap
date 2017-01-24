@@ -41,9 +41,9 @@ get_matrix_of_counts <- function(list_of_histograms_for_a_given_muscle){
 library(fields)
 plot_force_progression_map <- function(histogram_progression_matrix){
 	#force 0 to be pure black, and next to zero to be bright orange.
-	color_ramp_PuOr <- colorRampPalette(c("#f1a340","#f7f7f7","#998ec3"))(99)
+	color_ramp_PuOr <- colorRampPalette(c("#f1a340","#ffffff","#998ec3"))(99)
 	color_ramp <- c("#000000", color_ramp_PuOr) 
-	fields::image.plot(histogram_progression_matrix, col= color_ramp, axes=FALSE,xlab="",ylab="")
+	fields::image.plot(histogram_progression_matrix, col= color_ramp, axes=FALSE,xlab="",ylab="", horizontal=TRUE )
 	axes(histogram_progression_matrix,0,1)
 }
 
@@ -59,7 +59,7 @@ density_normalization <- function(list_of_histogram_matrices_count) {
 #if you want to use a different progression of more points, put the new filenames here
 require(parallel)
 # by default it's just looking in the current folder.
-main <- function(filename_list, folder_path = ""){
+main <- function(filename_list, folder_path = "", binwidth){
 	#specify the filenames of the data for analysis
 	list_of_point_matrices <- lapply(
 		filename_list,
@@ -68,7 +68,7 @@ main <- function(filename_list, folder_path = ""){
 		})
 	message("All point sets from CSV are in active Memory.")
 
-	list_of_histogram_sublists <- lapply(list_of_point_matrices, histogram_all_columns, binwidth=0.025)
+	list_of_histogram_sublists <- lapply(list_of_point_matrices, histogram_all_columns, binwidth)
 	
 	#split the ublists and reorder into histograms by muscle
 	# tasks_iterator = 1:length(finger_alpha_progression_filenames)
@@ -84,8 +84,9 @@ main <- function(filename_list, folder_path = ""){
 	message("4")
 	list_of_histogram_matrices <- lapply(list_of_histogram_progressions, get_matrix_of_counts)
 	list_of_histogram_matrices_density <- lapply(list_of_histogram_matrices, density_normalization)
-	pdf(paste0(get_unix_time_string_now(), "quicktry2_histogram_heatmap.pdf"), height = 3.5, width = 21)
-	par(mfrow=c(1,7))
+	pdf(paste0(get_unix_time_string_now(), "quicktry2_histogram_heatmap.pdf"), height = 10.5, width = 8)
+	par(mfrow=c(7,1))
+	par(mar=c(2,2,2,2))
 	lapply(list_of_histogram_matrices_density, plot_force_progression_map)
 	dev.off()
 	message('plotting over')
@@ -119,7 +120,7 @@ pca_muscle_solution_space <- function(filename, folder_path){
 
 # main(finger_alpha_progression_filenames)
 filenames_to_visualize <- distal_progression_csv_filename_list()
-main(filenames_to_visualize, folder_path = 'n_1000_alphalen_1000/')
+main(filenames_to_visualize, folder_path = 'n_1000_alphalen_1000/', binwidth=0.05)
 # dev.off()
 # plot.new()
 # par(mfrow=c(1,3))
