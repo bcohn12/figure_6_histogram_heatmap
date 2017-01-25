@@ -1,5 +1,4 @@
 language: R
 R:
   - 3.2.4
-script: source('test_hist_heatmap.r') 
-test_dir('.')
+script: r source('test_hist_heatmap.r') test_dir('.')
