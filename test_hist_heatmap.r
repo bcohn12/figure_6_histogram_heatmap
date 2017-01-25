@@ -1,7 +1,6 @@
 
 library(testthat)
-#library("pkg")
-#test_package("pkg")
+
 source('vectormap.r')
 source('distal_progression_csv_filename_list.r')
 
