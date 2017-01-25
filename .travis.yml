@@ -3,6 +3,5 @@ language: r
 r: 3.2.4
 
 script: 
-  - r
   - source('test_hist_heatmap.r') 
   - test_dir('.')
