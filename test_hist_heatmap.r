@@ -1,8 +1,8 @@
 
 library(testthat)
 
-source('vectormap.r')
-source('distal_progression_csv_filename_list.r')
+source('vectormap.R')
+source('distal_progression_csv_filename_list.R')
 
 test_that('Sort the list in numerical ascending order', {
 	test_list <- c(
