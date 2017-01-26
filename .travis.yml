@@ -4,5 +4,8 @@ sudo: required
 r_github_packages:
  - jimhester/covr
 
+r:
+  - 3.2.4
+
 after_success:
-  - Rscript -e 'library(covr);coveralls()'
+  - Rscript -e 'source('test_hist_heatmap.r');testthat('.')'
