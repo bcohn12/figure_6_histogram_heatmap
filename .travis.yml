@@ -1,7 +1,8 @@
 language: r
+sudo: required
 
-r: 3.2.4
+r_github_packages:
+ - jimhester/covr
 
-script: 
-  - source('test_hist_heatmap.r') 
-  - test_dir('.')
+after_success:
+  - Rscript -e 'library(covr);coveralls()'
