@@ -8,6 +8,13 @@ before_install:
 
 install:
   - ./travis-tool.sh install_r testthat
+  - ./travis-tool.sh install_r stringr
+  - ./travis-tool.sh install_r MASS
+  - ./travis-tool.sh install_r fields
+  - ./travis-tool.sh install_r parallel
+  - ./travis-tool.sh install_r spam
+  - ./travis-tool.sh install_r grid
+  - ./travis-tool.sh install_r maps
 
 script:
   - Rscript -e "library(testthat);test_dir('.')"
