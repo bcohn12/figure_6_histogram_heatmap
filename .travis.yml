@@ -8,7 +8,6 @@ before_install:
 
 install:
   - ./travis-tool.sh install_r testthat
-  - ./travis-tool.sh install_r stringr
   - ./travis-tool.sh install_r MASS
   - ./travis-tool.sh install_r fields
   - ./travis-tool.sh install_r parallel
