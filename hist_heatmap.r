@@ -1,6 +1,6 @@
 source('vectormap.r')
 source('distal_progression_csv_filename_list.r')
-
+source('plot_histogram_matrix_3d.r')
 
 ## @param point_matrix a matrix where each row is a n-dimensional point sampled. columns are muscles.
 ## @return val a list of histogramdatastructures
@@ -57,6 +57,9 @@ density_normalization <- function(list_of_histogram_matrices_count) {
 	return(list_of_histogram_matrices_count/sample_size)
 }
 
+
+
+
 #main#
 #if you want to use a different progression of more points, put the new filenames here
 require(parallel)
@@ -69,7 +72,6 @@ main <- function(filename_list, folder_path = "", binwidth=0.02, log_the_values=
 	  		read.csv(paste0(folder_path,i), header=FALSE)
 		})
 	message("All point sets from CSV are in active Memory.")
-
 	list_of_histogram_sublists <- lapply(list_of_point_matrices, histogram_all_columns, binwidth)
 	
 	# split the sublists and reorder into histograms by muscle
@@ -91,6 +93,7 @@ main <- function(filename_list, folder_path = "", binwidth=0.02, log_the_values=
 	lapply(list_of_histogram_matrices_density, plot_force_progression_map, log_the_values)
 	dev.off()
 	message('plotting over')
+	return(list_of_histogram_matrices)
 }
 
 
@@ -116,8 +119,28 @@ pca_muscle_solution_space <- function(filename, folder_path){
 	print(loadings)
 }
 
+plot_histogram_matrices <- function(list_of_histogram_matrices){
+	require(rgl)
+	open3d()
+	mat <- t(matrix(1:8,ncol=4))
+	layout3d(mat, sharedMouse = TRUE)
+	for (i in 1:7) {
+	  next3d()
+	  plot_histogram_matrix_3d(list_of_histogram_matrices[[i]], 100)
+	  next3d()
+	}
+	highlevel(integer())
+}
+
 filenames_to_visualize <- sorted_distal_progression_csv_filename_list()
-main(filenames_to_visualize, folder_path = 'n_1000_alphalen_1000/', binwidth=0.05, log_the_values=FALSE)
+list_of_histogram_matrices<- main(filenames_to_visualize, folder_path = 'n_1000_alphalen_1000/', binwidth=0.05, log_the_values=FALSE)
+plot_histogram_matrices(list_of_histogram_matrices)
+
+
+
+
+
+
 
 #if you want to get a PCA variance_explained plot for a couple of the plots. Loadings will be printed to the console.
 
