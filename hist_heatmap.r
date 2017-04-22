@@ -38,6 +38,8 @@ get_matrix_of_counts <- function(list_of_histograms_for_a_given_muscle){
 	return(do.call(rbind,res)) #convert from list of vectors into matrix (index=>rownum)
 }
 library(fields)
+
+
 plot_force_progression_map <- function(histogram_progression_matrix, log_the_values=FALSE){
 	#force 0 to be pure black, and next to zero to be bright orange.
 	color_ramp <- colorRampPalette(c("#27499b","#2d7cb0","#45afba","#90d0b2", "#eaf2c3", "#ffffff"))(99)
@@ -57,8 +59,15 @@ density_normalization <- function(list_of_histogram_matrices_count) {
 	return(list_of_histogram_matrices_count/sample_size)
 }
 
-
-
+#for many files in one directory
+get_list_of_point_matrices <- function(filename_list, folder_path){
+  list_of_point_matrices <- lapply(
+   filename_list,
+   function(i){
+     read.csv(paste0(folder_path,i), header=FALSE)
+   })
+  return(list_of_point_matrices)
+}
 
 #main#
 #if you want to use a different progression of more points, put the new filenames here
@@ -66,11 +75,7 @@ require(parallel)
 # by default it's just looking in the current folder.
 main <- function(filename_list, folder_path = "", binwidth=0.02, log_the_values=FALSE){
 	#specify the filenames of the data for analysis
-	list_of_point_matrices <- lapply(
-		filename_list,
-		function(i){
-	  		read.csv(paste0(folder_path,i), header=FALSE)
-		})
+  list_of_point_matrices<- get_list_of_point_matrices(filename_list, folder_path)
 	message("All point sets from CSV are in active Memory.")
 	list_of_histogram_sublists <- lapply(list_of_point_matrices, histogram_all_columns, binwidth)
 	
@@ -128,19 +133,31 @@ plot_histogram_matrices <- function(list_of_histogram_matrices){
 	  next3d()
 	  plot_histogram_matrix_3d(list_of_histogram_matrices[[i]], 100)
 	  next3d()
+	  
 	}
 	highlevel(integer())
 }
+
+plot_histogram_matrices_same_fig <- function(list_of_histogram_matrices){
+	require(rgl)
+	open3d()
+	mat <- t(matrix(1:8,ncol=4))
+	layout3d(mat, sharedMouse = TRUE)
+	for (i in 1:7) {
+	  plot_histogram_matrix_3d(list_of_histogram_matrices[[i]], 100)
+	}
+	highlevel(integer())
+}
+
 
 filenames_to_visualize <- sorted_distal_progression_csv_filename_list()
 list_of_histogram_matrices<- main(filenames_to_visualize, folder_path = 'n_1000_alphalen_1000/', binwidth=0.05, log_the_values=FALSE)
 plot_histogram_matrices(list_of_histogram_matrices)
 
 
-
-
-
-
+rgl.clear()
+plot_3d_histogram_lineup(list_of_histogram_matrices, y_scale=50, time_spacing=100, activation_spacing = 1000, interplot_spacing=21000)
+bg3d('white')
 
 #if you want to get a PCA variance_explained plot for a couple of the plots. Loadings will be printed to the console.
 

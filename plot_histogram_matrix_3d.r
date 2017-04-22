@@ -14,6 +14,12 @@ view_params <- function(){
     "cex", "useFreeType")))
 }
 
+generate_color_ramp <- function(length) {
+    color_ramp <- colorRampPalette(c("#27499b","#2d7cb0","#45afba","#90d0b2", "#eaf2c3", "#ffffff"))(length-1)
+    color_ramp <- c("#000000", color_ramp) #append black as 0 for contrast
+    return(color_ramp)
+}
+
 plot_histogram_matrix_3d <- function(histogram_matrix, y_scale) {
      require(rgl)
      y <- y_scale * histogram_matrix      # Exaggerate the relief
@@ -21,10 +27,24 @@ plot_histogram_matrix_3d <- function(histogram_matrix, y_scale) {
      z <- 500 * (1:ncol(y))   # 10 meter spacing (E to W)
      ylim <- range(y)
      ylen <- ylim[2] - ylim[1] + 1
-     colorlut <- heat.colors(ylen) # height color lookup table
-     col <- colorlut[ y - ylim[1] + 1 ] # assign colors to heights for each point    
-     # rgl.open()
-     # par3d(view_params())
+     
      # bg3d("white")
-     rgl.surface(x, z, y, color = "cyan", back = "lines")
+     rgl.surface(x, rev(z), y, color = generate_color_ramp(ylen), back = "lines")
 }
+
+plot_3d_histogram_lineup <- function(histogram_matrix_list, y_scale, time_spacing=100, activation_spacing = 1000, interplot_spacing) {
+     require(rgl)
+     for (i in 1:length(histogram_matrix_list)) {
+         spacing <- (i-1)*(interplot_spacing)
+         y <- y_scale * histogram_matrix_list[[i]]      # Exaggerate the relief
+         x <- time_spacing * (1:nrow(y))   # 10 meter spacing (S to N)
+         z <- activation_spacing * (1:ncol(y))   # 10 meter spacing (E to W)
+         ylim <- range(y)
+         ylen <- ylim[2] - ylim[1] + 1 
+         # rgl.open()
+         # par3d(view_params())
+         # bg3d("white")
+         rgl.surface(x, rev(z) + spacing, y, color = generate_color_ramp(ylen), back = "lines", specular='black')
+     }
+}
+
